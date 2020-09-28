@@ -1,18 +1,27 @@
 #!/usr/bin/env bash
 function Schlep-Setup() {
 
+  Schlep-LoadConfiguration
+
   [[ -z "$SCHLEP_HOME"    ]] && export SCHLEP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}")/../" >/dev/null 2>&1 && pwd )"
   [[ -z "$SCHLEP_SERVICE" ]] && export SCHLEP_SERVICE="$SCHLEP_HOME/server/schlep.sh"
   [[ -z "$SCHLEP_HOST"    ]] && export SCHLEP_HOST="localhost"
 
   Schlep-Log "HOME=$SCHLEP_HOME,SERVICE=$SCHLEP_SERVICE,HOST=$SCHLEP_HOST."
 }
+function Schlep-LoadConfiguration() {
+    SCHLEP_CONFIGURATION="${HOME}/schlep.properties"
+    if [[ -s "${SCHLEP_CONFIGURATION}" ]]; then
+      source $SCHLEP_CONFIGURATION
+    fi
+}
 
 function Schlep-Banner() {
   echo "[$1]:------------------------------------------" >> "$SCHLEP_HOME/.schlep"
 }
 function Schlep-Log() {
-  echo "[$(date +%F_%T)]--Client:[$*]" >> "$SCHLEP_HOME/.schlep"
+  echo "[$(date +%F_%T)]--Client:[$*]" 2>&1 >> "$SCHLEP_HOME/.schlep"
+  [[ $? -ne 0 ]] && echo "[$(date +%F_%T)]--Client:[$*]"
 }
 function Schlep-Dump() {
   Schlep-Log "DUMP"
@@ -42,7 +51,7 @@ Schlep-Log "[$0] -- ENTRY [$@]"
 status=1
 tmpfile=$(mktemp /tmp/schlep.XXXXXX)
   # Send the request to the server
-  # ssh localhost "${SCHLEP_HOME}/server/schlep.sh $@" > $tmpfile
+  # ssh ${SCHLEP_HOST} "${SCHLEP_HOME}/server/schlep.sh $@" > $tmpfile
   Schlep-Request $@ > $tmpfile
 
   # Perform the client side resolution
