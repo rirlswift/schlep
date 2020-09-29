@@ -10,7 +10,6 @@
 # On local machine
 mkdir -p /opt/swift/services/gateway && cd /opt/swift/services/gateway
 
-
 curl https://raw.githubusercontent.com/rirlswift/schlep/master/schlep >client/schlep.sh
 ```
 
