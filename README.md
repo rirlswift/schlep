@@ -25,11 +25,14 @@ export SCHLEP_SERVICE="/opt/swift/services/gateway/server/schlep.sh"
 Host 172.16.6.71
      HostName 172.16.6.71
      User jkadmin
-     IdentityFile ~/.ssh/private-key
+     IdentityFile ~/.ssh/some-key # YOUR PRIVATE KEY -- DO NOT SHARE
      IdentitiesOnly yes
 ```
 
 ### Send public key to Devops (devops@swiftengineering.com)
+```bash
+${HOME}/.ssh/some-key.pub # Public part of KEY -- Send to DevOps
+```
 
 
 ## Sample commands
@@ -39,7 +42,8 @@ Host 172.16.6.71
 /opt/swift/services/gateway/client/schlep.sh
 ```
 ### Expected output
-```bash[/tmp/schlep.Icrzxe]::Begin Query Resolution.
+```bash
+[/tmp/schlep.Icrzxe]::Begin Query Resolution.
 [/opt/swift/services/gateway/server/schlep.sh]:: Null query has been ignored.
 [/tmp/schlep.Icrzxe]::End   Query Resolution.
 
