@@ -4,8 +4,6 @@
 
 ### Instructions for Linux or Windows (with bash)
 
-
-
 ```bash
 # On local machine
 mkdir -p /opt/swift/services/gateway && cd /opt/swift/services/gateway
@@ -20,5 +18,29 @@ cat >${HOME}/schlep.properties <<@
 export SCHLEP_HOST=172.16.6.71
 export SCHLEP_SERVICE="/opt/swift/services/gateway/server/schlep.sh"
 @
+
+```
+### Add SSH configuration (to ${HOME}/.ssh/config)
+```bash
+Host 172.16.6.71
+     HostName 172.16.6.71
+     User jkadmin
+     IdentityFile ~/.ssh/private-key
+     IdentitiesOnly yes
+```
+
+### Send public key to Devops (devops@swiftengineering.com)
+
+
+## Sample commands
+
+### Connectivity Test
+```bash
+/opt/swift/services/gateway/client/schlep.sh
+```
+### Expected output
+```bash[/tmp/schlep.Icrzxe]::Begin Query Resolution.
+[/opt/swift/services/gateway/server/schlep.sh]:: Null query has been ignored.
+[/tmp/schlep.Icrzxe]::End   Query Resolution.
 
 ```
