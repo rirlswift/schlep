@@ -9,6 +9,9 @@
 mkdir -p /opt/swift/services/gateway/client && cd /opt/swift/services/gateway
 
 curl https://raw.githubusercontent.com/rirlswift/schlep/master/schlep >client/schlep.sh
+
+# On Linux endpoints
+chmod +x client/schlep
 ```
 
 ### Configure the Client Properties
