@@ -14,6 +14,10 @@ function Schlep-LoadConfiguration() {
     if [[ -s "${SCHLEP_CONFIGURATION}" ]]; then
       source $SCHLEP_CONFIGURATION
     fi
+    SCHLEP_CONFIGURATION="/opt/swift/services/gateway/schlep.properties"
+    if [[ -s "${SCHLEP_CONFIGURATION}" ]]; then
+      source $SCHLEP_CONFIGURATION
+    fi    
 }
 
 function Schlep-Banner() {
