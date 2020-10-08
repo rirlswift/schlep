@@ -1,0 +1,2 @@
+export SCHLEP_HOST=172.16.6.71
+export SCHELP_SERVICE="/opt/swift/services/gateway/server/schlep.sh"
