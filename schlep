@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 function Schlep-Setup() {
 
+  trap times EXIT
+
   Schlep-LoadConfiguration
 
   [[ -z "$SCHLEP_HOME"    ]] && export SCHLEP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}")/../" >/dev/null 2>&1 && pwd )"
@@ -12,12 +14,14 @@ function Schlep-Setup() {
 function Schlep-LoadConfiguration() {
     SCHLEP_CONFIGURATION="${HOME}/schlep.properties"
     if [[ -s "${SCHLEP_CONFIGURATION}" ]]; then
+      Schlep-Log "[$0] -- Load Configuration [$SCHLEP_CONFIGURATION]"
       source $SCHLEP_CONFIGURATION
     fi
     SCHLEP_CONFIGURATION="/opt/swift/services/gateway/schlep.properties"
     if [[ -s "${SCHLEP_CONFIGURATION}" ]]; then
+      Schlep-Log "[$0] -- Load Configuration [$SCHLEP_CONFIGURATION]"
       source $SCHLEP_CONFIGURATION
-    fi    
+    fi
 }
 
 function Schlep-Banner() {
@@ -37,7 +41,9 @@ function Schlep-Debug() {
   echo "#####:DEBUG"
 }
 function Schlep-Request() {
+  set -x
   ssh ${SCHLEP_HOST} "$SCHLEP_SERVICE $@" > $tmpfile
+  set +x
 }
 function Schlep-Resolve() {
   [[ -n "${SCHLEP_DEBUG}" ]] && Schlep-Debug $1
