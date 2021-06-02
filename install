@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+function InstallClient() {
+  echo "[$0]::Swift DevOps Gateway -- InstallClient"
+  set -x
+    mkdir -p /opt/swift/services/gateway/client && cd /opt/swift/services/gateway \
+    && curl $URL_RAW_BASE/schlep > /opt/swift/services/gateway/client/schlep.sh \
+    && ls -lh /opt/swift/services/gateway/client/schlep.sh \
+    && chmod +x /opt/swift/services/gateway/client/schlep.sh
+  set +x
+  echo "[done]"
+}
+function ConfigureClient() {
+  echo "[$0]::Swift DevOps Gateway -- ConfigureClient"
+  set -x
+    curl $URL_RAW_BASE/config > $HOME/schlep.properties \
+    && ls -lh $HOME/schlep.properties
+  set +x
+  echo "[done]"
+}
+function ConfigureSSH() {
+  echo "[$0]::Swift DevOps Gateway -- ConfigureSSH"
+  set -x
+    curl $URL_RAW_BASE/ssh > $HOME/.ssh/config.swift \
+    && ls -lh $HOME/.ssh/config.swift \
+    && [[ $automata ]] && [[ ! -f "$HOME/.ssh/config" ]] && echo "generated ssh test configuration for gateway" && mv -vf $HOME/.ssh/config.swift $HOME/.ssh/config
+  set +x
+  echo "[$0]::Swift DevOps Gateway -- Merge [${HOME}/.ssh/config]"
+  echo "[done]"
+}
+function ValidateClient() {
+  echo "[$0]::Swift DevOps Gateway -- Validation..."
+  set -x
+      /opt/swift/services/gateway/client/schlep.sh | grep -q "Null query has been ignored." \
+      && echo "[$0]::Swift DevOps Gateway Installed Successfully."
+      true
+  set +x
+}
+function ConfirmOperation() {
+  echo -n "Confirm::[$1]?" && read && $2 
+}
+#### Main
+[[ -z "${URL_RAW_BASE}" ]]  && URL_RAW_BASE="https://raw.githubusercontent.com/rirlswift/schlep/feature/DOICISB-11"
+echo "[$0]::Swift DevOps Gateway Installer -- Installer URL [$URL_RAW_BASE]"
+set -o errexit
+set -o pipefail
+automata=false
+if [ "$#" -ge 1 ]; then
+  echo "[$0]::Swift DevOps Gateway Installer -- AUTOMATED   Mode"
+  automata=true
+else
+  echo "[$0]::Swift DevOps Gateway Installer -- INTERACTIVE Mode"
+fi
+echo "[$0]::Swift DevOps Gateway Installer -- AUTOMATED   [$automata]"
+echo ""
+if [[ $automata == "true" ]]; then
+  InstallClient && ConfigureClient && ConfigureSSH && ValidateClient
+  echo "[$0]::Swift DevOps Gateway Installer -- Status   [$?]"
+else
+  ConfirmOperation "Install Gateway Client"   InstallClient
+  ConfirmOperation "Configure Gateway Client" ConfigureClient
+  ConfirmOperation "Configure Gateway Keys"   ConfigureSSH
+  ValidateClient
+fi 
+
+
+
