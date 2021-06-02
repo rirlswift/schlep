@@ -1,0 +1,6 @@
+# Swift Gatway Automated Configuration.
+Host gateway.swiftflightsoftware.com
+ HostName 1.tcp.ngrok.io
+ User jkadmin
+ IdentityFile ~/.ssh/id_rsa 
+ IdentitiesOnly yes
