@@ -3,9 +3,9 @@ function InstallClient() {
   echo "[$0]::Swift DevOps Gateway -- InstallClient"
   set -x
     mkdir -p /opt/swift/services/gateway/client && cd /opt/swift/services/gateway \
-    && curl $URL_RAW_BASE/schlep > /opt/swift/services/gateway/schlep.sh \
-    && ls -lh /opt/swift/services/gateway/schlep.sh \
-    && chmod +x /opt/swift/services/gateway/schlep.sh
+    && curl $URL_RAW_BASE/schlep > /opt/swift/services/gateway/client/schlep.sh \
+    && ls -lh /opt/swift/services/gateway/client/schlep.sh \
+    && chmod +x /opt/swift/services/gateway/client/schlep.sh
   set +x
   echo "[done]"
 }
@@ -26,11 +26,18 @@ function ConfigureSSH() {
   echo "[$0]::Swift DevOps Gateway -- Merge [${HOME}/.ssh/config]"
   echo "[done]"
 }
+function ValidateClient() {
+  echo "[$0]::Swift DevOps Gateway -- Validation..."
+  set -x
+      /opt/swift/services/gateway/client/schlep.sh | grep -q "Null query has been ignored." \
+      && echo "[$0]::Swift DevOps Gateway Installed Successfully."
+  set +x
+}
 function ConfirmOperation() {
   echo -n "Confirm::[$1]?" && read && $2 
 }
 #### Main
-URL_RAW_BASE="https://raw.githubusercontent.com/rirlswift/schlep/feaure/support-access-outside-vpn"
+URL_RAW_BASE="https://raw.githubusercontent.com/rirlswift/schlep/feature/support-access-outside-vpn"
 set -o errexit
 set -o pipefail
 automata=false
@@ -43,11 +50,12 @@ fi
 echo "[$0]::Swift DevOps Gateway Installer -- AUTOMATED   [$automata]"
 echo ""
 if [[ $automata == "true" ]]; then
-  InstallClient && ConfigureClient && ConfigureSSH
+  InstallClient && ConfigureClient && ConfigureSSH && ValidateClient
 else
   ConfirmOperation "Install Gateway Client"   InstallClient
   ConfirmOperation "Configure Gateway Client" ConfigureClient
   ConfirmOperation "Configure Gateway Keys"   ConfigureSSH
+  ValidateClient
 fi 
 
 
