@@ -1,3 +1,10 @@
 #!/usr/bin/env bash
-echo "gateway auto-install"
+local automata=false
+if [ "$#" -ge 1 ]; then
+  echo "[$0]::Swift DevOps Gateway Installer -- AUTOMATED   Mode"
+  automata=true
+else
+  echo "[$0]::Swift DevOps Gateway Installer -- INTERACTIVE Mode"
+fi
+  echo "[$0]::Swift DevOps Gateway Installer -- AUTOMATED   [$automata]"
 

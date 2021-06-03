@@ -1,11 +1,11 @@
 # Installation instructions for Swift Artifact Gateway Prototype (schlep)
 
-## One-step install script
+## Interactive Install Script
 ```bash
+bash -c "$(wget -qO- https://git.io/JGVyQ)"
 ```
 
-
-## Getting started (download the schlep client)
+## Manual Install Process (download the schlep client)
 
 ### Instructions for Linux or Windows (with bash)
 
@@ -38,7 +38,6 @@ curl https://raw.githubusercontent.com/rirlswift/schlep/feature/support-access-o
 ```bash
 ${HOME}/.ssh/some-key.pub # Public part of KEY -- Send to DevOps
 ```
-
 
 ## Sample commands
 
