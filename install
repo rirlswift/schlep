@@ -1,10 +1,54 @@
 #!/usr/bin/env bash
-local automata=false
+function InstallClient() {
+  echo "[$0]::Swift DevOps Gateway -- InstallClient"
+  set -x
+    mkdir -p /opt/swift/services/gateway/client && cd /opt/swift/services/gateway \
+    && curl $URL_RAW_BASE/schlep > /opt/swift/services/gateway/schlep.sh \
+    && ls -lh /opt/swift/services/gateway/schlep.sh \
+    && chmod +x /opt/swift/services/gateway/schlep.sh
+  set +x
+  echo "[done]"
+}
+function ConfigureClient() {
+  echo "[$0]::Swift DevOps Gateway -- ConfigureClient"
+  set -x
+    curl $URL_RAW_BASE/config > $HOME/schlep.properties \
+    && ls -lh $HOME/schlep.properties
+  set +x
+  echo "[done]"
+}
+function ConfigureSSH() {
+  echo "[$0]::Swift DevOps Gateway -- ConfigureSSH"
+  set -x
+    curl $URL_RAW_BASE/ssh > $HOME/.ssh/config.swift \
+    && ls -lh $HOME/.ssh/config.swift
+  set +x
+  echo "[$0]::Swift DevOps Gateway -- Merge [${HOME}/.ssh/config]"
+  echo "[done]"
+}
+function ConfirmOperation() {
+  echo -n "Confirm::[$1]?" && read && $2 
+}
+#### Main
+URL_RAW_BASE="https://raw.githubusercontent.com/rirlswift/schlep/feaure/support-access-outside-vpn"
+set -o errexit
+set -o pipefail
+automata=false
 if [ "$#" -ge 1 ]; then
   echo "[$0]::Swift DevOps Gateway Installer -- AUTOMATED   Mode"
   automata=true
 else
   echo "[$0]::Swift DevOps Gateway Installer -- INTERACTIVE Mode"
 fi
-  echo "[$0]::Swift DevOps Gateway Installer -- AUTOMATED   [$automata]"
+echo "[$0]::Swift DevOps Gateway Installer -- AUTOMATED   [$automata]"
+echo ""
+if [[ $automata == "true" ]]; then
+  InstallClient && ConfigureClient && ConfigureSSH
+else
+  ConfirmOperation "Install Gateway Client"   InstallClient
+  ConfirmOperation "Configure Gateway Client" ConfigureClient
+  ConfirmOperation "Configure Gateway Keys"   ConfigureSSH
+fi 
+
+
 
