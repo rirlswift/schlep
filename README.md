@@ -5,6 +5,11 @@
 bash -c "$(wget -qO- https://git.io/JGVyQ)"
 ```
 
+### Fully automated Installation 
+```bash
+bash -c "$(wget -qO- https://git.io/JGVyQ) auto"
+```
+
 ## Manual Install Process (download the schlep client)
 
 ### Instructions for Linux or Windows (with bash)
