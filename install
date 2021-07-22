@@ -32,7 +32,6 @@ function ValidateClient() {
   set -x
       /opt/swift/services/gateway/client/schlep.sh | grep -q "Null query has been ignored." \
       && echo "[$0]::Swift DevOps Gateway Installed Successfully."
-      true
   set +x
 }
 function ConfirmOperation() {
