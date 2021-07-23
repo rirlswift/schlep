@@ -18,7 +18,7 @@ bash -c "$(wget -qO- https://git.io/JGVyQ) auto"
 # On local machine
 mkdir -p /opt/swift/services/gateway/client && cd /opt/swift/services/gateway
 
-curl https://raw.githubusercontent.com/rirlswift/schlep/feature/support-access-outside-vpn/schlep >client/schlep.sh
+curl https://raw.githubusercontent.com/rirlswift/schlep/master
 
 # On Linux endpoints
 chmod +x client/schlep.sh
@@ -28,13 +28,13 @@ chmod +x client/schlep.sh
 ```bash
 # On local machine
 
-curl https://raw.githubusercontent.com/rirlswift/schlep/feaure/support-access-outside-vpn/config >$HOME/schlep.properties
+curl https://raw.githubusercontent.com/rirlswift/schlep/master/config >$HOME/schlep.properties
 ```
 ### Add SSH configuration (to ${HOME}/.ssh/config)
 ```bash
 # On local machine
 
-curl https://raw.githubusercontent.com/rirlswift/schlep/feature/support-access-outside-vpn/ssh >$HOME/.ssh/config.swift
+curl https://raw.githubusercontent.com/rirlswift/schlep/master/ssh >$HOME/.ssh/config.swift
 
 # Edit and merge this file into ${HOME}/.ssh/config per your requirements.
 ```
