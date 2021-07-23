@@ -38,7 +38,7 @@ function ConfirmOperation() {
   echo -n "Confirm::[$1]?" && read && $2 
 }
 #### Main
-[[ -z "${URL_RAW_BASE}" ]]  && URL_RAW_BASE="https://raw.githubusercontent.com/rirlswift/schlep/feature/DOICISB-11"
+[[ -z "${URL_RAW_BASE}" ]]  && URL_RAW_BASE="https://raw.githubusercontent.com/rirlswift/master"
 echo "[$0]::Swift DevOps Gateway Installer -- Installer URL [$URL_RAW_BASE]"
 set -o errexit
 set -o pipefail
