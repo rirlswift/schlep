@@ -2,6 +2,7 @@
 function Schlep-Setup() {
 
   Schlep-LoadConfiguration
+  Schlep-Trace "Schlep-Setup"
 
   [[ -z "$SCHLEP_HOME"    ]] && export SCHLEP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}")/../" >/dev/null 2>&1 && pwd )"
   [[ -z "$SCHLEP_SERVICE" ]] && export SCHLEP_SERVICE="$SCHLEP_HOME/server/schlep.sh"
@@ -13,11 +14,23 @@ function Schlep-LoadConfiguration() {
     SCHLEP_CONFIGURATION="${HOME}/schlep.properties"
     if [[ -s "${SCHLEP_CONFIGURATION}" ]]; then
       source $SCHLEP_CONFIGURATION
+      Schlep-Trace "Configure-Home"
     fi
     SCHLEP_CONFIGURATION="/opt/swift/services/gateway/schlep.properties"
     if [[ -s "${SCHLEP_CONFIGURATION}" ]]; then
       source $SCHLEP_CONFIGURATION
+      Schlep-Trace "Configure-Service"
     fi    
+    Schlep-Trace "Schlep-LoadConfiguration"
+}
+function Schlep-Trace() {
+  if [[ "$SCHLEP_TRACE" ]]; then
+    echo ""
+    echo "=>TRACE[$*]"
+    echo "TRACE::SCHLEP_HOST   =[$SCHLEP_HOST]"
+    echo "TRACE::SCHLEP_SERVICE=[$SCHLEP_SERVICE]"
+    echo "TRACE::SCHLEP_HOME   =[$SCHLEP_HOME]"
+  fi
 }
 
 function Schlep-Banner() {
@@ -37,7 +50,8 @@ function Schlep-Debug() {
   echo "#####:DEBUG"
 }
 function Schlep-Request() {
-  ssh ${SCHLEP_HOST} "$SCHLEP_SERVICE $@" > $tmpfile
+  [[ "$SCHLEP_TRACE" ]] && Schlep-Trace "Schlep-Request" && echo ""
+  ssh ${SCHLEP_HOST} "$SCHLEP_SERVICE $@"  > ${tmpfile}
 }
 function Schlep-Resolve() {
   [[ -n "${SCHLEP_DEBUG}" ]] && Schlep-Debug $1
@@ -53,10 +67,10 @@ Schlep-Banner "BEGIN::Main"
 Schlep-Log "[$0] -- ENTRY [$@]"
 
 status=1
-tmpfile=$(mktemp /tmp/schlep.XXXXXX)
+export tmpfile=$(mktemp /tmp/schlep.XXXXXX)
   # Send the request to the server
-  # ssh ${SCHLEP_HOST} "${SCHLEP_HOME}/server/schlep.sh $@" > $tmpfile
-  Schlep-Request $@ > $tmpfile
+  Schlep-Trace "Main"
+  Schlep-Request $@
 
   # Perform the client side resolution
   Schlep-Resolve $tmpfile

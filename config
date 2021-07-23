@@ -1,2 +1,14 @@
-export SCHLEP_HOST=172.16.6.71
-export SCHELP_SERVICE="/opt/swift/services/gateway/server/schlep.sh"
+#!/usr/bin/env/bash
+if [[ "$SCHLEP_TRACE" ]]; then
+  echo ""
+  echo "Load schlep configuration::[${BASH_SOURCE[0]}]"
+fi
+
+export SCHLEP_HOST=gateway.swiftflightsoftware.com
+export SCHLEP_SERVICE="/opt/swift/services/gateway/server/schlep.sh"
+
+if [[ "$SCHLEP_TRACE" ]]; then
+  echo "SCHLEP_HOST=[$SCHLEP_HOST]"
+  echo "SCHLEP_SERVICE=[$SCHLEP_SERVICE]"
+  echo ""
+fi

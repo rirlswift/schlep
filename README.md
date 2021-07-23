@@ -1,6 +1,16 @@
 # Installation instructions for Swift Artifact Gateway Prototype (schlep)
 
-## Getting started (download the schlep client)
+## Interactive Install Script
+```bash
+bash -c "$(wget -qO- https://git.io/JGVyQ)"
+```
+
+### Fully automated Installation 
+```bash
+bash -c "$(wget -qO- https://git.io/JGVyQ) auto"
+```
+
+## Manual Install Process (download the schlep client)
 
 ### Instructions for Linux or Windows (with bash)
 
@@ -8,7 +18,7 @@
 # On local machine
 mkdir -p /opt/swift/services/gateway/client && cd /opt/swift/services/gateway
 
-curl https://raw.githubusercontent.com/rirlswift/schlep/master/schlep >client/schlep.sh
+curl https://raw.githubusercontent.com/rirlswift/schlep/master
 
 # On Linux endpoints
 chmod +x client/schlep.sh
@@ -17,26 +27,22 @@ chmod +x client/schlep.sh
 ### Configure the Client Properties
 ```bash
 # On local machine
-cat >${HOME}/schlep.properties <<@
-export SCHLEP_HOST=172.16.6.71
-export SCHLEP_SERVICE="/opt/swift/services/gateway/server/schlep.sh"
-@
 
+curl https://raw.githubusercontent.com/rirlswift/schlep/master/config >$HOME/schlep.properties
 ```
 ### Add SSH configuration (to ${HOME}/.ssh/config)
 ```bash
-Host 172.16.6.71
-     HostName 172.16.6.71
-     User jkadmin
-     IdentityFile ~/.ssh/some-key # YOUR PRIVATE KEY -- DO NOT SHARE
-     IdentitiesOnly yes
+# On local machine
+
+curl https://raw.githubusercontent.com/rirlswift/schlep/master/ssh >$HOME/.ssh/config.swift
+
+# Edit and merge this file into ${HOME}/.ssh/config per your requirements.
 ```
 
 ### Send public key to Devops (devops@swiftengineering.com)
 ```bash
 ${HOME}/.ssh/some-key.pub # Public part of KEY -- Send to DevOps
 ```
-
 
 ## Sample commands
 
@@ -49,5 +55,4 @@ ${HOME}/.ssh/some-key.pub # Public part of KEY -- Send to DevOps
 [/tmp/schlep.Icrzxe]::Begin Query Resolution.
 [/opt/swift/services/gateway/server/schlep.sh]:: Null query has been ignored.
 [/tmp/schlep.Icrzxe]::End   Query Resolution.
-
 ```
