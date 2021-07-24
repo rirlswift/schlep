@@ -2,12 +2,12 @@
 
 ## Interactive Install Script
 ```bash
-bash -c "$(wget -qO- https://git.io/JGVyQ)"
+bash -c "$(wget -qO- https://git.io/J8a1N)"
 ```
 
 ### Fully automated Installation 
 ```bash
-bash -c "$(wget -qO- https://git.io/JGVyQ) auto"
+# Pending 
 ```
 
 ## Manual Install Process (download the schlep client)
